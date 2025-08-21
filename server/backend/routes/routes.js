@@ -1,8 +1,8 @@
 import express from 'express'
-import User from '../backend/models/User.js'
+import {User} from '../models/User.js'
 import bcrypt from 'bcrypt'
 
-const router = express.router()
+const router = express.Router()
 
 router.post('/api/auth/register', async (req, res) => {
     try{
@@ -18,7 +18,7 @@ router.post('/api/auth/register', async (req, res) => {
 });
 
 router.post('/api/auth/login', (req, res) => {
-
+    const {username, password} = req.body;
 })
 
 
