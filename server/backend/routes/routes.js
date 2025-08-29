@@ -24,7 +24,6 @@ router.post('/api/auth/register', async (req, res) => {
 
 router.post('/api/auth/login', async (req, res) => {
 const {username, password} = req.body;
-    // res.json({username, password});
     const storedPass = await User.findOne({username:username}).lean();
     if(storedPass){
         const isMatch = await bcrypt.compare(password, storedPass.password);
