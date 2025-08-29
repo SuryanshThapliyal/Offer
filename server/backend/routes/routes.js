@@ -11,23 +11,23 @@ router.post('/api/auth/register', async (req, res) => {
         const saltRounds = 10;
         const hashedPassword = await bcrypt.hash(password, saltRounds);
         const user = await User.create({username, password: hashedPassword})
-        user.save()
         .then((result) => {
             res.status(201).json({message: 'User registered', user: result})
         }).catch((err) => {
             res.status(500).json({error: err.message});
         });
+        user.save();
     } catch(err){
         res.status(500).json({error: err.message});
     }
 });
 
-router.post('/api/auth/login', (req, res) => {
-    const {username, password} = req.body;
-    res.json({message: 'Login route'}); 
-    const storedPass = User.findOne({username: username});
+router.post('/api/auth/login', async (req, res) => {
+const {username, password} = req.body;
+    // res.json({username, password});
+    const storedPass = await User.findOne({username:username}).lean();
     if(storedPass){
-        const isMatch = bcrypt.compare(password, storedPass.password);
+        const isMatch = await bcrypt.compare(password, storedPass.password);
         if(isMatch){
             res.json({message: 'Login successful'});
         } else {
