@@ -1,13 +1,13 @@
 import express from 'express'
 import {User} from '../models/User.js'
 import bcrypt from 'bcrypt'
+import jwt from 'jsonwebtoken'
 
 const router = express.Router()
 
 router.post('/api/auth/register', async (req, res) => {
     try{
         const {username, password} = req.body;
-
         const saltRounds = 10;
         const hashedPassword = await bcrypt.hash(password, saltRounds);
         const user = await User.create({username, password: hashedPassword})
@@ -20,6 +20,7 @@ router.post('/api/auth/register', async (req, res) => {
     } catch(err){
         res.status(500).json({error: err.message});
     }
+    
 });
 
 router.post('/api/auth/login', async (req, res) => {
@@ -35,6 +36,11 @@ const {username, password} = req.body;
     } else {
         res.status(404).json({message: 'User not found'});
     }
+    jwt.sign(
+        { id: user._id, username: user.username },
+        process.env.JWT_KEY,
+        { expiresIn: '1h' },
+    )
 })
 
 
