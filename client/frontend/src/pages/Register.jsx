@@ -1,19 +1,17 @@
 import { useState } from "react";
 import axios from 'axios';
+import { useAuth } from "../context/AuthContext";
 
 
 export default function Register(){
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
+    const{register} = useAuth();
 
     const handleRegister = async (e) => {
         try{
         e.preventDefault();
-        const res = await axios.post('http://localhost:3000/api/auth/register', {
-            username: username,
-            password: password
-        });
-        alert(res.data.message);
+        register(username, password);
     }catch (err) {
         alert(err.response?.data?.message || "error registering")
     }
@@ -25,7 +23,6 @@ export default function Register(){
                 <div>
                     <h1>Register</h1>
                     <hr />
-
                     <label htmlFor ="username" >Username </label>
                     <br />
                     <input type="text" placeholder="username" name="username" id="un" onChange={(e) => setUsername(e.target.value)}/>
@@ -34,7 +31,7 @@ export default function Register(){
                     <br />
                     <input type="password" placeholder='password' name="password" id="pass" onChange={(e) => setPassword(e.target.value)}/>
                     <br />
-                    <button type="submit" class="registerbtn"
+                    <button type="submit" className="registerbtn"
                     onClick={handleRegister}>Button</button>
                 </div>
             </form>

@@ -1,11 +1,14 @@
-import mongoose from 'mongoose'
 import helmet from 'helmet'
 import express from 'express'
 import cors from 'cors'
 import bodyparser from 'body-parser'
 import router from './routes/routes.js'
+import { connectDB } from './config/db.js';
+
 
 const app = express();
+connectDB();
+
 
 app.use(bodyparser.json())
 app.use(cors())

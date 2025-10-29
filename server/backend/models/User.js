@@ -12,8 +12,5 @@ const userSchema = mongoose.Schema({
     }
 })
 
-await mongoose.connect("mongodb://localhost:27017/offer");
-console.log('Connected to database');
-
 
 export const User = mongoose.model('User', userSchema);
