@@ -3,6 +3,10 @@ import Register from './pages/Register.jsx';
 import {BrowserRouter, Routes, Route} from 'react-router-dom'
 import { AuthProvider } from './context/AuthContext.jsx';
 import './App.css'
+import MapPage from "./pages/MapPage";
+
+
+
 
 function App() {
 
@@ -13,6 +17,7 @@ function App() {
       <Routes>
       <Route path = '/login' element = {<Login />}/>
       <Route path = '/register' element = {<Register />}/>
+      <Route path="/map" element={<MapPage />} />
       </Routes>
       </BrowserRouter>
       </AuthProvider>

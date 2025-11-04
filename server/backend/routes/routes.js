@@ -2,7 +2,10 @@ import express from 'express'
 import {User} from '../models/User.js'
 import bcrypt from 'bcrypt'
 import jwt from 'jsonwebtoken'
+import dotenv from 'dotenv'
+import auth from '../middleware/auth.js'
 
+dotenv.config();
 const router = express.Router()
 
 router.post('/api/auth/register', async (req, res) => {
@@ -39,8 +42,8 @@ const {username, password} = req.body;
     } else {
         res.status(404).json({message: 'User not found'});
     }
-    jwt.sign(
-        { id: user._id, username: user.username },
+    const token = jwt.sign(
+        { id: storedPass._id, username: storedPass.username },
         process.env.JWT_KEY,
         { expiresIn: '1h' },
     )
@@ -50,5 +53,8 @@ const {username, password} = req.body;
 }
 });
 
+router.get('/api/auth/protected', auth, async (req, res) => {
+    res.json({message: 'This is a protected route', user: req.user});
+});
 
 export default router;
